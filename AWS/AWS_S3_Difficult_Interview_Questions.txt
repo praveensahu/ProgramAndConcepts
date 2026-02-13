@@ -1,0 +1,182 @@
+AWS S3 – Difficult Interview Questions and Answers
+
+1)  Explain S3 consistency model changes and their impact. Answer:
+    Amazon S3 now provides strong read-after-write consistency for PUT,
+    DELETE, and LIST operations across all regions. Impact:
+
+-   Applications no longer need additional consistency layers.
+-   Removes need for EMRFS Consistent View or S3Guard.
+-   Simplifies distributed system design.
+
+------------------------------------------------------------------------
+
+2)  How does S3 handle 11 9’s durability technically? Answer: S3
+    automatically stores data redundantly across multiple Availability
+    Zones within a region. It uses:
+
+-   Data replication
+-   Checksum validation
+-   Automatic self-healing Durability (99.999999999%) means extremely
+    low probability of data loss.
+
+------------------------------------------------------------------------
+
+3)  Difference between S3 Replication and Backup? Answer: Replication:
+
+-   Near real-time
+-   Copies objects to another bucket (same or different region)
+-   Requires versioning enabled
+
+Backup: - Periodic snapshot - May involve AWS Backup or lifecycle
+archiving - Not necessarily real-time
+
+Replication is for DR. Backup is for recovery over time.
+
+------------------------------------------------------------------------
+
+4)  Why would a user with full S3 access still get AccessDenied? Answer:
+    Possible reasons:
+
+-   Explicit Deny in bucket policy
+-   Service Control Policy (SCP)
+-   KMS key permission missing
+-   Block Public Access enabled
+-   Object owned by another AWS account
+-   MFA Delete enabled
+
+Explicit Deny always overrides Allow.
+
+------------------------------------------------------------------------
+
+5)  How does S3 pricing work? Answer: Pricing depends on:
+
+-   Storage class
+-   Storage size (GB/month)
+-   PUT, GET, LIST requests
+-   Data transfer out
+-   Lifecycle transitions
+-   Replication costs
+
+S3 charges for both storage and requests.
+
+------------------------------------------------------------------------
+
+6)  What are S3 Access Points and when would you use them? Answer: S3
+    Access Points provide unique endpoints with separate access
+    policies. Used when:
+
+-   Multiple teams access same bucket
+-   Large-scale shared datasets
+-   Need policy isolation per application
+
+------------------------------------------------------------------------
+
+7)  What is S3 Object Ownership and why is it important? Answer: Object
+    Ownership controls whether bucket owner or object uploader owns the
+    object. Options:
+
+-   Bucket owner enforced (ACLs disabled)
+-   Bucket owner preferred
+-   Object writer
+
+Important for cross-account uploads.
+
+------------------------------------------------------------------------
+
+8)  Explain multipart upload internals. Answer: Multipart upload:
+
+-   Breaks large file into parts
+-   Each part uploaded independently
+-   S3 combines parts after completion Benefits:
+-   Parallel uploads
+-   Resume failed uploads
+-   Better performance
+
+Required for files > 5 GB.
+
+------------------------------------------------------------------------
+
+9)  What is the difference between SSE-S3, SSE-KMS, and SSE-C? Answer:
+    SSE-S3:
+
+-   AWS manages keys
+
+SSE-KMS: - AWS KMS manages keys - Fine-grained access control -
+Auditable via CloudTrail
+
+SSE-C: - Customer provides encryption key - AWS does not store key
+
+------------------------------------------------------------------------
+
+10) How would you secure a highly sensitive S3 bucket in production?
+    Answer:
+
+-   Enable Block Public Access
+-   Use least privilege IAM roles
+-   Enable versioning
+-   Enable Object Lock if required
+-   Use SSE-KMS encryption
+-   Enable CloudTrail logging
+-   Restrict access using VPC endpoints
+-   Enable access logging
+-   Use bucket policies with explicit deny for public access
+
+------------------------------------------------------------------------
+
+11) Explain S3 lifecycle policy optimization strategy. Answer: Example
+    strategy:
+
+-   Move to Standard-IA after 30 days
+-   Move to Glacier after 90 days
+-   Delete after 365 days
+
+Reduces storage cost while keeping data accessible when required.
+
+------------------------------------------------------------------------
+
+12) What happens if replication fails? Answer:
+
+-   Replication status shows FAILED
+-   Object not copied
+-   CloudWatch metrics track replication
+-   Must reprocess or fix IAM/KMS permissions
+
+Replication requires: - Versioning enabled - Correct IAM role - KMS
+permissions if encrypted
+
+------------------------------------------------------------------------
+
+13) Explain S3 request performance optimization techniques. Answer:
+
+-   Use multipart upload
+-   Use Transfer Acceleration
+-   Distribute object keys (avoid hot partitions)
+-   Use CloudFront for caching
+-   Use parallel requests
+
+------------------------------------------------------------------------
+
+14) How does S3 integrate with event-driven architecture? Answer: S3 can
+    trigger:
+
+-   Lambda
+-   SNS
+-   SQS
+
+Used for: - Image processing - Log processing - Data pipelines - ETL
+workflows
+
+------------------------------------------------------------------------
+
+15) Design a highly available static website using S3. Answer:
+
+-   Store static files in S3
+-   Enable static website hosting
+-   Use CloudFront CDN
+-   Enable HTTPS via ACM
+-   Configure Route53 DNS
+-   Enable replication for DR
+
+------------------------------------------------------------------------
+
+End of Document

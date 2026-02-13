@@ -1,0 +1,88 @@
+AWS IAM – Advanced Interview Questions and Answers
+
+1)  What happens when multiple IAM policies conflict?
+
+AWS follows strict policy evaluation logic: - Explicit Deny always
+wins - Then Explicit Allow - Otherwise Implicit Deny (default)
+
+Evaluation order: - Service Control Policies (SCPs) - Resource-based
+policies - Identity-based policies - Session policies - Permission
+boundaries
+
+Even if AdministratorAccess is attached, an explicit deny in SCP
+overrides it.
+
+2)  Difference between IAM Users and IAM Roles
+
+IAM User: - Permanent identity - Long-term credentials - Used for
+individuals
+
+IAM Role: - Temporary identity - Uses STS temporary credentials - Used
+for applications and cross-account access
+
+3)  How does cross-account access work?
+
+Requirements: - Trust policy in target account role - Permission policy
+attached to role - Source principal must have sts:AssumeRole permission
+
+Flow: - Source calls AssumeRole - STS returns temporary credentials -
+Access granted based on role permissions
+
+4)  What is a Permission Boundary?
+
+A permission boundary sets maximum permissions for a user or role.
+Effective permissions = Intersection of: - Identity policy - Permission
+boundary - SCP
+
+Used to prevent privilege escalation.
+
+5)  Identity-based vs Resource-based policies
+
+Identity-based: - Attached to users, groups, roles - Grants permissions
+to act on resources
+
+Resource-based: - Attached to resource (S3, Lambda, SQS) - Defines who
+can access the resource
+
+6)  How do you prevent privilege escalation?
+
+-   Restrict iam:PassRole
+-   Deny iam:* where not needed
+-   Use permission boundaries
+-   Apply SCP guardrails
+-   Avoid wildcard permissions
+-   Monitor via CloudTrail
+
+7)  What is AWS STS?
+
+Security Token Service provides: - Temporary credentials - Role
+assumption - Federation support
+
+Common APIs: - AssumeRole - AssumeRoleWithSAML -
+AssumeRoleWithWebIdentity
+
+8)  Difference between SCP and IAM Policy
+
+SCP: - Organization-level - Restricts maximum permissions - Cannot grant
+permissions
+
+IAM Policy: - Account-level - Grants permissions
+
+9)  How to debug AccessDeniedException?
+
+-   Check CloudTrail logs
+-   Check SCP
+-   Check permission boundary
+-   Check identity policy
+-   Check resource policy
+-   Use IAM Policy Simulator
+
+10) IAM Best Practices
+
+-   Never use root user
+-   Enable MFA
+-   Use roles instead of users
+-   Apply least privilege
+-   Rotate access keys
+-   Avoid wildcard permissions
+-   Enable logging and monitoring
