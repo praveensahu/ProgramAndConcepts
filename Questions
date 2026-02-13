@@ -1,0 +1,102 @@
+/**
+ * Questions:
+ * 1Write a program to find the sum of all elements in a list using Java Stream API.-
+ *
+ * 2Given a list of integers, write a program to find and print the maximum element using Java Stream API.
+ *
+ * 3Write a program to filter out all the even numbers from a list using Java Stream API.
+ *
+ * 4Given a list of strings, write a program to count the number of strings containing a specific character ‘a’ using Java Stream API.
+ *
+ * Write a program to convert a list of strings to uppercase using Java Stream API.
+ *
+ * Given a list of integers, write a program to calculate the average of all the numbers using Java Stream API.
+ *
+ * Write a program to sort a list of strings in alphabetical order using Java Stream API.
+ *
+ * Given a list of strings, write a program to concatenate all the strings using Java Stream API.
+ *
+ * Write a program to find the longest string in a list of strings using Java Stream API.
+ *
+ * 10.Given a list of integers, write a program to find and print the second largest number using Java Stream API.
+ *
+ * Write a program to remove all the duplicate elements from a list using Java Stream API.
+ *
+ * Given a list of strings, write a program to find and print the shortest string using Java Stream API.
+ *
+ * Write a program to convert a list of integers to a list of their squares using Java Stream API.
+ *
+ * Given a list of strings, write a program to find and print the strings starting with a specific prefix ‘a’ using Java Stream API.
+ *
+ * Write a program to find the product of all elements in a list of integers using Java Stream API.
+ *
+ * Given a list of integers, write a program to find and print the prime numbers using Java Stream API.
+ *
+ * Write a program to check if a list of strings contains a specific string using Java Stream API.
+ *
+ * Given a list of strings, write a program to find and print the strings with length greater than a specified value (5) using Java Stream API.
+ *
+ *20 Write a program to filter out all the elements divisible by 3 and 5 from a list of integers using Java Stream API.
+ *
+ * Given a list of strings, write a program to find and print the strings with the maximum length using Java Stream API.
+ *
+ * Write a program to reverse a list of strings using Java Stream API.
+ *
+ * Given a list of integers, write a program to find and print the distinct odd numbers using Java Stream API.
+ *
+ * Write a program to remove all null values from a list of strings using Java Stream API.
+ *
+ * 25Given a list of integers, write a program to find and print the sum of all odd numbers using Java Stream API.
+ *
+ * Write a program to find the intersection of two lists of strings using Java Stream API.
+ *
+ * Given a list of strings, write a program to find and print the strings containing only vowels using Java Stream API.
+ *
+ * Write a program to convert a list of strings to a comma-separated string using Java Stream API.
+ *
+ * Given a list of integers, write a program to find and print the index of the first occurrence of a specific number using Java Stream API.
+ *
+ *30 Write a program to find the union of two lists of integers using Java Stream API.
+ *
+ * Given a list of strings, write a program to find and print the strings containing duplicate characters using Java Stream API.
+ *
+ * Write a program to check if all elements in a list of strings are of the same length using Java Stream API.
+ *
+ * Given a list of integers, write a program to find and print the difference between the maximum and minimum numbers using Java Stream API.
+ *
+     * Write a program to remove all whitespace from a list of strings using Java Stream API.
+ *
+ * 35Given a list of strings, write a program to find and print the strings containing a specific substring using Java Stream API.
+ *
+ * Write a program to find the mode of a list of integers using Java Stream API.
+ *
+ * Given a list of strings, write a program to find and print the strings with the minimum length using Java Stream API.
+ *
+ * Write a program to find the frequency of each element in a list of integers using Java Stream API.
+ *
+ * Given a list of strings, write a program to find and print the strings with the maximum number of vowels using Java Stream API.
+ *
+ * 40Write a program to check if a list of integers is sorted in ascending order using Java Stream API.
+ *
+ * Given a list of strings, write a program to find and print the strings with the minimum number of vowels using Java Stream API.
+ *
+ * Write a program to find the median of a list of integers using Java Stream API.
+ *
+ * Given a list of strings, write a program to find and print the strings containing a specific character at least twice using Java Stream API.
+ *
+ * Write a program to find the kth smallest element in a list of integers using Java Stream API.
+ *
+ *45 Given a list of strings, write a program to find and print the strings with the maximum number of consonants using Java Stream API.
+ *
+ * Write a program to check if a list of strings is palindrome using Java Stream API.
+ *
+ * Given a list of integers, write a program to find and print the elements with the highest frequency using Java Stream API.
+ *
+ * Write a program to remove all non-numeric characters from a list of strings using Java Stream API.
+ *
+ * Given a list of strings, write a program to find and print the strings containing only digits using Java Stream API.
+ *
+ * Write a program to find the kth largest element in a list of integers using Java Stream API.
+ *
+ * 50Given a list of integers, write a program to find and print the elements with the lowest frequency using Java Stream API.
+ */
