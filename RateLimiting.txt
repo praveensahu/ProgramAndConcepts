@@ -1,0 +1,36 @@
+import redis.clients.jedis.Jedis;
+
+import java.util.UUID;
+
+public class SlidingWindowRateLimiter {
+
+    private static final int MAX_REQUESTS = 100;
+    private static final int WINDOW_SIZE_SECONDS = 60; // 1 min
+
+    private Jedis jedis = new Jedis("localhost", 6379);
+
+    public boolean isAllowed(String userId) {
+
+        String key = "rate_limit:" + userId;
+        long now = System.currentTimeMillis();
+        long windowStart = now - (WINDOW_SIZE_SECONDS * 1000);
+
+        // 1. Remove expired entries
+        jedis.zremrangeByScore(key, 0, windowStart);
+
+        // 2. Get current request count
+        Long currentCount = jedis.zcard(key);
+
+        if (currentCount >= MAX_REQUESTS) {
+            return false; // Rate limit exceeded
+        }
+
+        // 3. Add current request
+        jedis.zadd(key, now, UUID.randomUUID().toString());
+
+        // 4. Set expiry (auto cleanup)
+        jedis.expire(key, WINDOW_SIZE_SECONDS);
+
+        return true;
+    }
+}
