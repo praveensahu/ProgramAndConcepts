@@ -1,0 +1,258 @@
+🔐 CORS (Cross-Origin Resource Sharing)
+1️⃣ What is CORS and why is it needed?
+
+Answer:
+
+CORS is a browser security mechanism that allows or restricts web applications running on one origin from accessing resources on another origin.
+
+Origin = protocol + domain + port
+
+Enforced by browser, not server.
+
+Without CORS, browsers block cross-origin requests due to Same-Origin Policy (SOP).
+
+2️⃣ What happens in a CORS preflight request?
+
+Answer:
+
+For non-simple requests (e.g., PUT, DELETE, custom headers), browser sends:
+
+OPTIONS /api/resource
+Origin: https://example.com
+Access-Control-Request-Method: PUT
+Access-Control-Request-Headers: Authorization
+
+
+Server must respond with:
+
+Access-Control-Allow-Origin
+Access-Control-Allow-Methods
+Access-Control-Allow-Headers
+
+
+If allowed → browser sends actual request.
+
+3️⃣ What is a "simple request" in CORS?
+
+A request is simple if:
+
+Method = GET, POST, HEAD
+
+Content-Type = text/plain, application/x-www-form-urlencoded, multipart/form-data
+
+No custom headers
+
+Simple requests skip preflight.
+
+4️⃣ Why should you NOT use Access-Control-Allow-Origin: * in production?
+
+Because:
+
+It allows any domain to access APIs.
+
+Dangerous when cookies or Authorization headers are involved.
+
+You cannot use * with Access-Control-Allow-Credentials: true.
+
+Best practice:
+
+Access-Control-Allow-Origin: https://trusted-domain.com
+
+5️⃣ Is CORS a security feature for servers?
+
+No.
+
+CORS protects users, not servers.
+
+Attackers using curl/Postman are not restricted.
+Only browsers enforce CORS.
+
+🔐 CSRF (Cross-Site Request Forgery)
+6️⃣ What is CSRF?
+
+CSRF is an attack where a malicious website tricks a logged-in user’s browser into making unintended requests.
+
+Example:
+User logged into banking app → visits malicious site → malicious site triggers money transfer.
+
+7️⃣ Why are JWT-based APIs usually not vulnerable to CSRF?
+
+Because:
+
+CSRF relies on automatic cookie sending
+
+JWT stored in Authorization header
+
+Browser does NOT automatically attach Authorization header
+
+Therefore → no CSRF risk (if not stored in cookie)
+
+8️⃣ Why are cookie-based session apps vulnerable to CSRF?
+
+Because:
+
+Browser automatically sends session cookies
+
+Server trusts cookie
+
+Malicious site can trigger POST request
+
+9️⃣ How do CSRF tokens work?
+
+Server generates unique token per session.
+
+Flow:
+
+Server sends token in HTML form.
+
+Client submits form with token.
+
+Server validates token matches session.
+
+If mismatch → reject.
+
+🔟 What is SameSite cookie attribute?
+
+It restricts cross-site cookie sending.
+
+Types:
+
+Strict → only same-site
+
+Lax → safe methods allowed
+
+None → cross-site allowed (must use HTTPS)
+
+Best practice:
+
+Set-Cookie: sessionId=abc; SameSite=Strict; Secure; HttpOnly
+
+🔥 Advanced CORS + CSRF Questions
+11️⃣ If you disable CSRF in Spring Security, when is it safe?
+
+Safe when:
+
+Stateless REST API
+
+Using JWT in Authorization header
+
+No session cookies used
+
+Unsafe when:
+
+Using session-based authentication
+
+12️⃣ Difference between CSRF and XSS?
+CSRF	XSS
+Tricks user browser	Injects malicious JS
+Exploits trust in cookies	Exploits trust in input
+No script execution needed	Script execution required
+13️⃣ How can XSS lead to CSRF bypass?
+
+If attacker injects JS via XSS:
+
+JS can read CSRF token
+
+Send valid forged request
+
+Therefore → prevent XSS to protect CSRF.
+
+14️⃣ Why is CORS not protection against CSRF?
+
+Because:
+
+CSRF does not need to read response.
+
+It only needs to send request.
+
+Browser will send cookies even if CORS blocks response.
+
+15️⃣ What is Double Submit Cookie Pattern?
+
+Instead of server session:
+
+Server sends CSRF token as cookie.
+
+Client sends same token in header.
+
+Server compares both.
+
+If equal → valid.
+
+🚀 Very Advanced / Architecture-Level Questions
+16️⃣ How do you secure a SPA + Spring Boot backend?
+
+Best practice:
+
+Use JWT in Authorization header
+
+Disable CSRF
+
+Enable CORS only for frontend domain
+
+Use HTTPS
+
+Set HttpOnly cookies if using refresh token
+
+17️⃣ Why is storing JWT in localStorage dangerous?
+
+Because:
+
+Vulnerable to XSS
+
+JS can read and steal token
+
+Better:
+
+Store access token in memory
+
+Store refresh token in HttpOnly cookie
+
+18️⃣ What happens if Access-Control-Allow-Credentials is true?
+
+Then:
+
+Browser sends cookies
+
+Cannot use * origin
+
+Must specify exact origin
+
+19️⃣ How would you debug a CORS issue in production?
+
+Steps:
+
+Check browser DevTools → Network tab
+
+Check preflight OPTIONS request
+
+Verify response headers
+
+Confirm origin matches allowed origin
+
+Check proxy/load balancer config
+
+20️⃣ Why is CSRF protection unnecessary for pure REST APIs?
+
+Because REST APIs should be:
+
+Stateless
+
+No cookies
+
+Use Authorization header
+
+CSRF attack requires cookies.
+
+🎯 Bonus: Real Senior-Level Question
+If CORS is enabled incorrectly with * and credentials, what happens?
+
+Browser blocks the response entirely.
+
+Because:
+
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+
+
+❌ Invalid combination.
