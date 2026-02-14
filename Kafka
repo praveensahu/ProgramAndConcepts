@@ -1,0 +1,297 @@
+🔥 Difficult Kafka Interview Questions & Answers (Senior Level)
+✅ 1. How does Kafka guarantee message ordering?
+
+Answer:
+
+Ordering is guaranteed only within a partition, not across partitions.
+
+Messages are appended sequentially with offsets.
+
+If strict ordering is required:
+
+Use single partition
+
+Or use key-based partitioning so same key → same partition.
+
+👉 Tradeoff:
+
+More partitions = more parallelism
+
+Fewer partitions = stronger ordering
+
+✅ 2. What happens when a broker fails?
+
+Answer:
+
+Kafka uses leader–follower replication.
+
+If leader broker crashes:
+
+Controller elects new leader from ISR (In Sync Replica).
+
+Producers continue if:
+
+acks=all
+min.insync.replicas >= 2
+
+
+👉 Risk:
+
+If ISR empty → data loss possible.
+
+✅ 3. How does Kafka achieve high throughput?
+
+Answer:
+
+Sequential disk writes (no random IO)
+
+Zero copy via sendfile
+
+Batching
+
+Compression
+
+Pull-based consumption
+
+Page cache usage
+
+👉 Kafka is more disk optimized than memory optimized.
+
+✅ 4. Explain Exactly Once Semantics (EOS)
+
+Answer:
+EOS = No duplicates + No data loss.
+
+Kafka uses:
+
+Idempotent producer
+
+Transactions
+
+Producer IDs + sequence numbers
+
+Producer config:
+
+enable.idempotence=true
+transactional.id=txn-1
+acks=all
+
+
+Consumer:
+
+isolation.level=read_committed
+
+✅ 5. What is ISR and why is it important?
+
+Answer:
+ISR = In Sync Replicas.
+
+Replica is ISR if:
+
+Fully caught up with leader
+
+Responds within lag threshold
+
+Leader election happens only from ISR.
+
+If ISR shrinks:
+
+durability risk increases.
+
+✅ 6. How does Kafka handle backpressure?
+
+Answer:
+Producer side:
+
+buffer.memory
+
+linger.ms
+
+batch.size
+
+Broker side:
+
+throttling
+
+quotas
+
+Consumer side:
+
+max.poll.records
+
+pause/resume
+
+manual commit
+
+👉 Kafka itself doesn't enforce push — consumers control flow.
+
+✅ 7. Difference between consumer group rebalance types?
+
+Answer:
+
+Eager Rebalance
+
+Stop all consumers
+
+Reassign partitions
+
+High downtime
+
+Cooperative Rebalance (Sticky)
+
+Incremental changes
+
+Less disruption
+
+Config:
+
+partition.assignment.strategy=CooperativeStickyAssignor
+
+✅ 8. What causes consumer lag?
+
+Answer:
+
+Slow processing
+
+GC pauses
+
+Large messages
+
+Network issues
+
+Partition skew
+
+Rebalances
+
+Poll loop blocking
+
+Monitoring:
+
+Burrow
+
+Cruise Control
+
+Prometheus
+
+✅ 9. How does Kafka ensure durability?
+
+Answer:
+
+Replication factor ≥ 3
+
+acks=all
+
+min.insync.replicas ≥ 2
+
+log flush policies
+
+fsync via OS page cache
+
+👉 durability ≠ persistence instantly to disk.
+
+✅ 10. Difference between log compaction vs retention?
+
+Answer:
+
+Retention
+
+Deletes old messages:
+
+retention.ms
+retention.bytes
+
+Compaction
+
+Keeps latest key version:
+
+cleanup.policy=compact
+
+
+Used for:
+
+CDC
+
+event sourcing
+
+state stores
+
+✅ 11. How does Kafka partition assignment work internally?
+
+Answer:
+Group Coordinator:
+
+Elects leader consumer
+
+Leader runs assignor
+
+Mapping returned
+
+SyncGroup distributes
+
+Assignors:
+
+Range
+
+RoundRobin
+
+Sticky
+
+CooperativeSticky
+
+✅ 12. How would you design Kafka for 100K TPS system?
+
+Answer:
+
+50–100 partitions
+
+RF=3
+
+Separate producer cluster
+
+Dedicated disks (NVMe)
+
+Compression = LZ4
+
+Batch size tuning
+
+Async producers
+
+Horizontal consumers
+
+Monitor broker network saturation
+
+✅ 13. When would Kafka NOT be a good choice?
+
+Answer:
+
+Strong ACID transactional system
+
+Ultra low latency (<2ms)
+
+Random read heavy workloads
+
+Queryable storage system
+
+OLTP replacement
+
+✅ 14. Difference between Kafka Streams vs Consumer API?
+
+Answer:
+
+Consumer API	Kafka Streams
+manual control	DSL
+stateless	stateful
+no local store	RocksDB
+harder joins	built-in joins
+flexible	opinionated
+✅ 15. How does idempotent producer work internally?
+
+Answer:
+
+Producer gets PID
+
+Maintains sequence numbers
+
+Broker checks duplicates
+
+Prevents retry duplicates
