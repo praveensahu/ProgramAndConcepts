@@ -1,0 +1,382 @@
+🔥 1. How does Route 53 achieve high availability at global scale?
+✅ Answer:
+
+Route 53 is a globally distributed authoritative DNS service with:
+
+Anycast routing
+
+Multiple edge DNS servers worldwide
+
+Health checks + automatic failover
+
+SLA-backed 100% availability (DNS service)
+
+Deep Points (Staff Level):
+
+Uses Anycast IPs → Same IP advertised from multiple edge locations.
+
+DNS resolvers automatically route to nearest/healthy edge.
+
+No single region dependency.
+
+Data replication across multiple AWS regions.
+
+Key Insight:
+Even if an entire AWS region fails, DNS resolution continues globally.
+
+🔥 2. Explain how Route 53 health checks actually work internally.
+✅ Answer:
+
+Health checks are external monitoring agents distributed globally.
+
+They:
+
+Send HTTP/HTTPS/TCP requests
+
+Evaluate response codes / latency / string matching
+
+Require quorum (majority healthy/unhealthy)
+
+Integrate with CloudWatch alarms
+
+Advanced Insight:
+
+Health checks run outside your VPC
+
+Failover decisions happen at DNS level
+
+TTL impacts failover speed
+
+DNS caching delays failover visibility
+
+🔥 3. How would you design active-active multi-region failover using Route 53?
+✅ Answer:
+
+Use:
+
+Latency-based routing
+
+Health checks per region
+
+Low TTL (30–60 sec)
+
+Multi-region ALBs
+
+Flow:
+
+Client → Route 53 → Lowest latency healthy region → ALB → App
+
+If region A fails:
+
+Health check fails
+
+Route 53 stops returning that IP
+
+Traffic shifts to region B
+
+Staff-Level Consideration:
+
+Data consistency strategy (RDS global, DynamoDB global tables)
+
+Session management (stateless or sticky?)
+
+Avoid split-brain scenarios
+
+🔥 4. Compare Latency vs Geolocation vs Geoproximity routing.
+Latency-Based
+
+Routes based on lowest measured latency
+
+Dynamic
+
+Geolocation
+
+Based on user country/continent
+
+Static mapping
+
+Geoproximity
+
+Based on geographic bias
+
+Allows traffic shifting by weight
+
+Staff Insight:
+
+Latency ≠ physical proximity.
+BGP routing may cause unexpected latency results.
+
+🔥 5. What are DNS propagation myths vs reality in Route 53?
+Myth:
+
+"DNS changes take 24–48 hours"
+
+Reality:
+
+Propagation is immediate in Route 53
+
+Delay comes from:
+
+Resolver cache
+
+Client cache
+
+ISP TTL honoring
+
+Staff Insight:
+
+You cannot force resolvers to drop cache.
+Low TTL before migration is key.
+
+🔥 6. How does Route 53 Resolver differ from Public Hosted Zones?
+Public Hosted Zone:
+
+Internet-facing DNS
+
+Route 53 Resolver:
+
+Internal DNS resolution
+
+Used for hybrid (on-prem ↔ AWS)
+
+Supports inbound/outbound endpoints
+
+Used in:
+
+Hybrid cloud
+
+Multi-account DNS architecture
+
+🔥 7. How do you prevent DNS-based DDoS attacks?
+Strategies:
+
+Use Route 53 (built-in AWS Shield Standard)
+
+Low TTL
+
+Use AWS WAF + CloudFront
+
+Avoid exposing origin IP
+
+Use Alias records
+
+Advanced:
+
+Rate-limit health checks
+
+Monitor NXDOMAIN spikes
+
+🔥 8. What is split-horizon DNS and how is it implemented in Route 53?
+Definition:
+
+Same domain resolves differently internally vs externally.
+
+Implementation:
+
+Create Public Hosted Zone
+
+Create Private Hosted Zone with same name
+
+Attach private zone to VPC
+
+Internal → Private IP
+External → Public IP
+
+🔥 9. Explain weighted routing use cases beyond canary releases.
+
+Weighted routing can be used for:
+
+A/B testing
+
+Gradual migration
+
+Multi-version API rollout
+
+Cost-based traffic distribution
+
+Multi-cloud traffic distribution
+
+Staff insight:
+Weights are DNS-level — not request-level.
+
+🔥 10. What happens if health checks fail but the endpoint is actually healthy?
+Possible Causes:
+
+Firewall blocking health checker IPs
+
+Rate limiting
+
+TLS mismatch
+
+Regional network issue
+
+Staff answer:
+Always validate from:
+
+External monitor
+
+Different geographies
+
+CloudWatch logs
+
+🔥 11. How does Route 53 handle consistency of DNS records globally?
+
+Highly durable storage
+
+Replicated control plane
+
+Eventually consistent updates
+
+Authoritative servers updated quickly
+
+Control plane vs data plane separation is key.
+
+🔥 12. Can Route 53 replace a Global Load Balancer?
+Partially.
+
+Route 53:
+
+DNS-level routing
+
+But not:
+
+Connection-aware
+
+Request-aware
+
+Instant failover (TTL bound)
+
+For advanced global LB → Use:
+
+AWS Global Accelerator
+
+Amazon CloudFront
+
+🔥 13. How would you design DNS for a SaaS multi-tenant platform?
+
+Options:
+
+Wildcard DNS (*.example.com)
+
+Customer-specific subdomains
+
+Dedicated hosted zones per tenant
+
+Private zones for internal microservices
+
+Staff considerations:
+
+Certificate automation
+
+DNS automation
+
+Tenant isolation
+
+Delegation strategy
+
+🔥 14. How does Alias record differ from CNAME?
+
+Alias:
+
+AWS-native
+
+Works at zone apex
+
+Free
+
+Points to ALB, CloudFront, S3
+
+CNAME:
+
+Standard DNS
+
+Cannot be root domain
+
+Extra DNS lookup
+
+🔥 15. What are failure modes of Route 53?
+
+TTL caching delays failover
+
+Health check false positives
+
+Resolver misbehavior
+
+ISP ignoring TTL
+
+DNS poisoning risks (if DNSSEC not enabled)
+
+🔥 16. Explain DNSSEC support in Route 53.
+
+DNSSEC:
+
+Cryptographic signature for DNS records
+
+Prevents spoofing
+
+Uses KSK and ZSK
+
+Tradeoffs:
+
+More complexity
+
+Slightly increased response size
+
+Requires registrar support
+
+🔥 17. How do you migrate DNS between providers with zero downtime?
+
+Steps:
+
+Lower TTL (48 hrs before)
+
+Sync records
+
+Validate new provider
+
+Switch NS records
+
+Monitor propagation
+
+🔥 18. What is the difference between NS delegation and subdomain delegation?
+
+NS delegation:
+
+Delegate child zone to another DNS provider
+
+Used in:
+
+Multi-account
+
+Multi-team architecture
+
+Cross-organization DNS ownership
+
+🔥 19. Explain hybrid DNS architecture (On-prem + AWS).
+
+Use:
+
+Route 53 Resolver inbound endpoint
+
+Route 53 Resolver outbound endpoint
+
+Conditional forwarding
+
+Flow:
+
+On-prem → Resolver inbound → Private hosted zone
+AWS → Outbound → On-prem DNS
+
+🔥 20. What metrics would you monitor in a production DNS architecture?
+
+Health check failure rate
+
+NXDOMAIN rate
+
+Resolver query logs
+
+Latency per region
+
+TTL misconfiguration
+
+DNSSEC validation errors
