@@ -1,0 +1,229 @@
+🚨 Core High-Priority Topics (Senior Java / Lead Backend)
+🧠 1. System Design (THIS is your biggest scoring area)
+
+You’re a lead — they expect architecture thinking.
+
+Focus on:
+
+High level design (HLD)
+
+Low level design (LLD)
+
+Back of the envelope estimation
+
+Scalability strategies
+
+Tradeoffs & decision making
+
+Failure handling
+
+Must be comfortable designing:
+
+Rate limiter (you asked recently 👍)
+
+Notification system
+
+Distributed logging
+
+URL shortener
+
+Payment system
+
+Order processing system
+
+Distributed cache
+
+Real-time data processing
+
+👉 Expect deep follow-ups like:
+
+how do you avoid duplicate processing?
+
+how do you handle partial failures?
+
+how do you handle retries without duplicates?
+
+⚙️ 2. Microservices Architecture (Senior Level)
+
+Not definitions — real-world problems.
+
+Cover:
+
+Service communication (sync vs async)
+
+Saga pattern
+
+Circuit breaker
+
+Bulkhead (you asked recently 👍)
+
+Event driven architecture
+
+API Gateway patterns
+
+Rate limiting (Redis implementation)
+
+Idempotency
+
+Distributed tracing
+
+Contract testing
+
+They WILL ask:
+
+how do you version microservices?
+
+deployment strategies?
+
+rollback strategies?
+(you already started these 👍)
+
+☕ 3. Advanced Java (Interviewers go deep here)
+
+Not syntax — internal behaviour.
+
+Important areas:
+
+JVM memory model
+
+Garbage collection tuning
+
+Threading & concurrency
+
+CompletableFuture
+
+Locks vs synchronized
+
+Volatile vs Atomic
+
+Thread pools
+
+Deadlock prevention
+
+Performance optimization
+
+Also:
+
+Java 8 streams internal working
+
+Functional interfaces
+
+Immutability
+
+equals/hashCode contract
+
+🌱 4. Spring Boot Deep Knowledge (NOT surface level)
+
+Expect questions like:
+
+Bean lifecycle
+
+prototype injected into singleton (you asked 👍)
+
+@Lookup
+
+AOP internals
+
+Transaction propagation
+
+Isolation levels
+
+Lazy loading pitfalls
+
+Webflux vs MVC
+
+Custom starters
+
+Auto configuration
+
+Senior interviews LOVE:
+
+how spring boot starts internally
+
+☁️ 5. Distributed Systems Concepts (VERY IMPORTANT)
+
+CAP theorem
+
+Consistency models (you asked S3 👍)
+
+Leader election
+
+Partition tolerance
+
+Distributed locks
+
+Eventual consistency
+
+Exactly once vs at least once
+
+Idempotency
+
+Retry strategies
+
+Backpressure
+
+📦 6. Kafka / Messaging (You have this stack — MUST master)
+
+Partition strategy
+
+Consumer rebalancing
+
+Offset management
+
+Idempotent producer
+
+Exactly once semantics
+
+Dead letter queues
+
+Ordering guarantees
+
+Throughput tuning
+
+🐳 7. Kubernetes & Cloud (Senior Expectations)
+
+Pod lifecycle
+
+Rolling updates
+
+Blue/green deployments
+
+Canary releases
+
+Autoscaling
+
+Readiness vs liveness
+
+Service mesh basics
+
+Multi region deployment
+
+🔥 8. Performance & Production Debugging (VERY COMMON FOR LEADS)
+
+They will ask:
+
+Production issue you solved
+
+Memory leak debugging
+
+CPU spike analysis
+
+Thread dump analysis
+
+GC pause investigation
+
+TPS bottleneck finding
+
+🎯 Bonus Topics (Differentiate You from 90% Candidates)
+
+Distributed caching strategies (Redis cluster)
+
+Rate limiting architecture
+
+Feature flags
+
+Schema evolution
+
+Observability (Prometheus, Grafana, OpenTelemetry)
+
+Security (JWT, OAuth2 flows)
